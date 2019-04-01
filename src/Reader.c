@@ -26,8 +26,7 @@ int *Reader_CheckSize(char **flags) {
 
     if (in == NULL) {
         fprintf(stderr,
-                "Reader_CheckSize: Nie znaleziono pliku z danymi wejściowymi. Przerywam działanie. \n",
-                flags[2]);
+                "Reader_CheckSize: Nie znaleziono pliku z danymi wejściowymi. Przerywam działanie. \n");
         exit(1);
     }
 

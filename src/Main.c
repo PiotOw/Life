@@ -4,6 +4,8 @@
 #include <ctype.h>
 #include "Reader.h"
 #include "Grid.h"
+#include "Formatted_writer.h"
+#include "AsciiArt_writer.h"
 
 void Flags_Interpreter(char **argv, int argc, char **flags) {
     for (int i = 1; i < argc; i++) {
@@ -97,15 +99,18 @@ int main(int argc, char **argv) {
     grids *grid_gens = malloc(sizeof *grid_gens);
     grid_gens->dim = rdim;
     grid_gens->grid = rgrid;
-    grid_gens->new_grid = NULL;
+    grid_gens->new_grid = rgrid;
+
+    int tmp_print = -1;                      //zmienna potrzebna do wypisania generacji wprowadzanej
+    AsciiArt_Print(tmp_print, flags, grid_gens);
 
     for (int i = 0; i < atoi(flags[0]); i++) {
         //Grid_CreateGen
-        //AsciiArt_Print
-        //Grid_ChangeGrids
+        AsciiArt_Print(i, flags, grid_gens);
+        Grid_ChangeGrids(grid_gens);
     }
 
-    //Formatted_Print
+    Formatted_Print(flags, grid_gens);
 
     return 0;
 

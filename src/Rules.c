@@ -21,9 +21,10 @@ int Rules_Interpreter(int *mini_grid) {
     }
 }
 
-/*   TEST    */
+/*   TEST
 int main() {
     int grid[9] = {1, 0, 0, 0, 1, 0, 0, 0, 0};
     int x = Rules_Interpreter(grid);
     printf("%d \n", x);
 }
+ */
