@@ -5,8 +5,10 @@ enum cell_state {
 };
 
 typedef struct grids {
-    int grid[];
-    int new_grid[];
-    int dim[2];
+    int *dim;
+    int *grid;
+    int *new_grid;
 } grids;
+
+void Grid_ChangeGrids(struct grids *grid_gens);
 #endif //LIFE_GRID_H

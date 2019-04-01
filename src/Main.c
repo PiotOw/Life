@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include "Reader.h"
+#include "Grid.h"
 
 void Flags_Interpreter(char **argv, int argc, char **flags) {
     for (int i = 1; i < argc; i++) {
@@ -53,6 +55,8 @@ void Flags_Interpreter(char **argv, int argc, char **flags) {
 }
 
 void Check_Flags(char **flags) {
+
+
     if (atoi(flags[0]) > 1000) {
         printf("Check_Flags: Nieprawidłowa wartość flagi \'--gen\', domyślna wartość to 5 \n");
         flags[0] = "5";
@@ -76,30 +80,32 @@ void Check_Flags(char **flags) {
 
 int main(int argc, char **argv) {
     char **flags = malloc(6 * sizeof *flags);
-    flags[0] = "5";
-    flags[1] = "y";
-    flags[2] = "std in";
-    flags[3] = "stdout";
-    flags[4] = "0";
-    flags[5] = "1";
+    flags[0] = "5";             //gen
+    flags[1] = "y";             //print
+    flags[2] = "stdin";         //input
+    flags[3] = "stdout";        //output
+    flags[4] = "0";             //dead
+    flags[5] = "1";             //alive
     Flags_Interpreter(argv, argc, flags);
-    for (int i = 0; i < 6; i++) {
-        printf("%s \n", flags[i]);
-    }
-    /*
-    printf("%c \n druga:    %c \n", *(flags[0]), *(flags[0] + 1));
-
-    char c = "f";
-    int i = atoi(c);
-
-
-     */
-    printf("AFTER \n \n");
     Check_Flags(flags);
-    for (int i = 0; i < 6; i++) {
-        printf("%s \n", flags[i]);
+
+    if (strcmp(flags[2], "stdin") == 0)
+        Reader_MakeTempFile();
+    int *rdim = Reader_CheckSize(flags);
+    int *rgrid = Reader_MakeGrid(flags, rdim);
+
+    grids *grid_gens = malloc(sizeof *grid_gens);
+    grid_gens->dim = rdim;
+    grid_gens->grid = rgrid;
+    grid_gens->new_grid = NULL;
+
+    for (int i = 0; i < atoi(flags[0]); i++) {
+        //Grid_CreateGen
+        //AsciiArt_Print
+        //Grid_ChangeGrids
     }
 
+    //Formatted_Print
 
     return 0;
 
