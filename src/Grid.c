@@ -1,4 +1,4 @@
-#include "grid.h"
+#include "Grid.h"
 
 void Grid_ChangeGrids(struct grids *grid_gens) {
     for (int i = 0; i < grid_gens->dim[0] * grid_gens->dim[1]; i++)

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#include "Reader.h"
 
 void Reader_MakeTempFile() {
     FILE *to = fopen("Reader_TmpFile.txt", "w");
