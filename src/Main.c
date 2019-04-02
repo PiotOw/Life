@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include "Reader.h"
+#include "Generator.h"
 #include "Grid.h"
 #include "Formatted_writer.h"
 #include "AsciiArt_writer.h"
@@ -90,7 +91,6 @@ int main(int argc, char **argv) {
     flags[5] = "1";             //alive
     Flags_Interpreter(argv, argc, flags);
     Check_Flags(flags);
-
     if (strcmp(flags[2], "stdin") == 0)
         Reader_MakeTempFile();
     int *rdim = Reader_CheckSize(flags);
@@ -101,12 +101,12 @@ int main(int argc, char **argv) {
     grid_gens->grid = rgrid;
     grid_gens->new_grid = rgrid;
 
-    int tmp_print = -1;                      //zmienna potrzebna do wypisania generacji wprowadzanej
-    AsciiArt_Print(tmp_print, flags, grid_gens);
+//    int tmp_print = -1;                      //zmienna potrzebna do wypisania generacji wprowadzanej
+//    AsciiArt_Print(tmp_print, flags, grid_gens);
 
     for (int i = 0; i < atoi(flags[0]); i++) {
-        //Grid_CreateGen
-        AsciiArt_Print(i, flags, grid_gens);
+        Generator_CreateGen(grid_gens);
+//        AsciiArt_Print(i, flags, grid_gens);
         Grid_ChangeGrids(grid_gens);
     }
 

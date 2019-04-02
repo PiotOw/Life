@@ -98,7 +98,7 @@ int *Reader_MakeGrid(char **flags, int *dim) {
             width++;
         } else if (file_char == '\n') {
             if (width < dim[0]) {
-                fprintf(stderr, "Reader_MakeGrid: Linia %d ma nieprawidłową długość. Powinna mieć %d,"
+                fprintf(stderr, "Reader_MakeGrid: Linia %d ma nieprawidłową długość. Powinna mieć %d, "
                                 "a ma %d. Wiersz został dopełniony martwymi komórkami.\n",
                         height, dim[0], width);
                 while (width < dim[0]) {
@@ -121,7 +121,7 @@ int *Reader_MakeGrid(char **flags, int *dim) {
         file_char = fgetc(in);
     }
     if (width < dim[0]) {
-        fprintf(stderr, "Reader_MakeGrid: Linia %d ma nieprawidłową długość. Powinna mieć %d,"
+        fprintf(stderr, "Reader_MakeGrid: Linia %d ma nieprawidłową długość. Powinna mieć %d, "
                         "a ma %d. Wiersz został dopełniony martwymi komórkami.\n",
                 height, dim[0], width);
         while (width < dim[0]) {

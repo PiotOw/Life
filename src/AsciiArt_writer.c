@@ -28,10 +28,10 @@ void AsciiArt_Print(int nfile, char **flags, struct grids *grid_gens) {
     for (int i = 0; i < grid_gens->dim[0] + 2; i++)
         fprintf(out, "-");
     fprintf(out, "\n");
-    for (int i = 0; i < grid_gens->dim[1]; i++) {
+    for (int height = 0; height < grid_gens->dim[1]; height++) {
         fprintf(out, "|");
-        for (int j = 0; j < grid_gens->dim[0]; j++) {
-            fprintf(out, "%s", (grid_gens->new_grid[j + grid_gens->dim[0] * i] == 0 ? flags[4] : flags[5]));
+        for (int width = 0; width < grid_gens->dim[0]; width++) {
+            fprintf(out, "%s", (grid_gens->new_grid[width + grid_gens->dim[0] * height] == 0 ? flags[4] : flags[5]));
         }
         fprintf(out, "|\n");
     }
