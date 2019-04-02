@@ -16,4 +16,6 @@ add_executable(Life
         src/Formatted_writer.c
         src/Formatted_writer.h
         src/AsciiArt_writer.c
-        src/AsciiArt_writer.h)
+        src/AsciiArt_writer.h
+        src/Generator.c
+        src/Generator.h)

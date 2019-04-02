@@ -96,17 +96,18 @@ int main(int argc, char **argv) {
     int *rdim = Reader_CheckSize(flags);
     int *rgrid = Reader_MakeGrid(flags, rdim);
 
+
     grids *grid_gens = malloc(sizeof *grid_gens);
     grid_gens->dim = rdim;
     grid_gens->grid = rgrid;
-    grid_gens->new_grid = rgrid;
+    grid_gens->new_grid = Grid_CopyGrid(grid_gens);
 
-//    int tmp_print = -1;                      //zmienna potrzebna do wypisania generacji wprowadzanej
-//    AsciiArt_Print(tmp_print, flags, grid_gens);
+    int tmp_print = -1;                      //zmienna potrzebna do wypisania generacji wprowadzanej
+    AsciiArt_Print(tmp_print, flags, grid_gens);
 
     for (int i = 0; i < atoi(flags[0]); i++) {
         Generator_CreateGen(grid_gens);
-//        AsciiArt_Print(i, flags, grid_gens);
+        AsciiArt_Print(i, flags, grid_gens);
         Grid_ChangeGrids(grid_gens);
     }
 
