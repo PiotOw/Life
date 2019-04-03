@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "Grid.h"
 
 int Rules_Interpreter(int *mini_grid) {
     int aliveCaunt = 0;
@@ -8,16 +9,16 @@ int Rules_Interpreter(int *mini_grid) {
     }
     if (cellState) {
         if (aliveCaunt == 3 || aliveCaunt == 4) {
-            return 1;
+            return ALIVE;
         } else {
-            return 0;
+            return DEAD;
         }
 
     } else {
         if (aliveCaunt == 3) {
-            return 1;
+            return ALIVE;
         } else {
-            return 0;
+            return DEAD;
         }
     }
 }

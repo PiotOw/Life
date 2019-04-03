@@ -5,7 +5,7 @@
 
 void AsciiArt_Print(int nfile, char **flags, struct grids *grid_gens) {
     FILE *out;
-    char filename[] = "Generations/gen0000.txt";
+    char filename[] = "Generations/gen0000.txt\0";
     if (nfile == -1) {
         filename[18] = (nfile + 1) + '0';
     } else if (nfile + 1 < 10) {
@@ -24,6 +24,7 @@ void AsciiArt_Print(int nfile, char **flags, struct grids *grid_gens) {
         filename[18] = '0';
     }
 
+
     out = fopen(filename, "w");
     for (int i = 0; i < grid_gens->dim[0] + 2; i++)
         fprintf(out, "-");
@@ -31,7 +32,7 @@ void AsciiArt_Print(int nfile, char **flags, struct grids *grid_gens) {
     for (int height = 0; height < grid_gens->dim[1]; height++) {
         fprintf(out, "|");
         for (int width = 0; width < grid_gens->dim[0]; width++) {
-            fprintf(out, "%s", (grid_gens->new_grid[width + grid_gens->dim[0] * height] == 0 ? flags[4] : flags[5]));
+            fprintf(out, "%s", (grid_gens->new_grid[width + (grid_gens->dim[0] * height)] == 0 ? flags[4] : flags[5]));
         }
         fprintf(out, "|\n");
     }

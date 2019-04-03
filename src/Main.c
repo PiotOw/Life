@@ -8,7 +8,14 @@
 #include "Formatted_writer.h"
 #include "AsciiArt_writer.h"
 
-void Flags_Interpreter(char **argv, int argc, char **flags) {
+char** Flags_Interpreter(char **argv, int argc) {
+    char **flags = malloc(6 * sizeof *flags);
+    flags[0] = "5";             //gen
+    flags[1] = "y";             //print
+    flags[2] = "stdin";         //input
+    flags[3] = "stdout";        //output
+    flags[4] = "0";             //dead
+    flags[5] = "1";             //alive
     for (int i = 1; i < argc; i++) {
 
         if (strcmp(argv[i], "--gen") == 0) {
@@ -55,11 +62,10 @@ void Flags_Interpreter(char **argv, int argc, char **flags) {
             }
         }
     }
+    return flags;
 }
 
 void Check_Flags(char **flags) {
-
-
     if (atoi(flags[0]) > 1000) {
         printf("Check_Flags: Nieprawidłowa wartość flagi \'--gen\', domyślna wartość to 5 \n");
         flags[0] = "5";
@@ -82,14 +88,7 @@ void Check_Flags(char **flags) {
 }
 
 int main(int argc, char **argv) {
-    char **flags = malloc(6 * sizeof *flags);
-    flags[0] = "5";             //gen
-    flags[1] = "y";             //print
-    flags[2] = "stdin";         //input
-    flags[3] = "stdout";        //output
-    flags[4] = "0";             //dead
-    flags[5] = "1";             //alive
-    Flags_Interpreter(argv, argc, flags);
+    char** flags = Flags_Interpreter(argv, argc);
     Check_Flags(flags);
     if (strcmp(flags[2], "stdin") == 0)
         Reader_MakeTempFile();
@@ -99,20 +98,20 @@ int main(int argc, char **argv) {
     grids *grid_gens = malloc(sizeof *grid_gens);
     grid_gens->dim = rdim;
     grid_gens->grid = rgrid;
-    grid_gens->new_grid = rgrid;
-
-//    int tmp_print = -1;                      //zmienna potrzebna do wypisania generacji wprowadzanej
-//    AsciiArt_Print(tmp_print, flags, grid_gens);
+    grid_gens->new_grid = Grid_CopyGrid(grid_gens);
+    int tmp_print = -1;                      //zmienna potrzebna do wypisania generacji wprowadzanej
+    AsciiArt_Print(tmp_print, flags, grid_gens);
 
     for (int i = 0; i < atoi(flags[0]); i++) {
         Generator_CreateGen(grid_gens);
-//        AsciiArt_Print(i, flags, grid_gens);
+        AsciiArt_Print(i, flags, grid_gens);
         Grid_ChangeGrids(grid_gens);
     }
 
     Formatted_Print(flags, grid_gens);
 
     return 0;
+
 
 }
 

@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <string.h>
 #include "Reader.h"
+#include "Grid.h"
 
 void Reader_MakeTempFile() {
     FILE *to = fopen("Reader_TmpFile.txt", "w");
@@ -85,16 +86,16 @@ int *Reader_MakeGrid(char **flags, int *dim) {
     }
     while (file_char != EOF) {
         if (file_char == '0') {
-            grid[width + dim[0] * (height - 1)] = 0;
+            grid[width + dim[0] * (height - 1)] = DEAD;
             width++;
         } else if (file_char == '1') {
-            grid[width + dim[0] * (height - 1)] = 1;
+            grid[width + dim[0] * (height - 1)] = ALIVE;
             width++;
         } else if (isalnum((file_char))) {
             fprintf(stderr,
                     "Reader_MakeGrid: Linia %d znak %d wczytano: \"%c\". Stan automatycznie zmieniony na \"1\" \n",
                     height, width, file_char);
-            grid[width + dim[0] * (height - 1)] = 1;
+            grid[width + dim[0] * (height - 1)] = ALIVE;
             width++;
         } else if (file_char == '\n') {
             if (width < dim[0]) {
@@ -102,7 +103,7 @@ int *Reader_MakeGrid(char **flags, int *dim) {
                                 "a ma %d. Wiersz został dopełniony martwymi komórkami.\n",
                         height, dim[0], width);
                 while (width < dim[0]) {
-                    grid[width + dim[0] * (height - 1)] = 0;
+                    grid[width + dim[0] * (height - 1)] = DEAD;
                     width++;
                 }
             }
