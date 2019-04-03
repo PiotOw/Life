@@ -99,20 +99,23 @@ int main(int argc, char **argv) {
     grids *grid_gens = malloc(sizeof *grid_gens);
     grid_gens->dim = rdim;
     grid_gens->grid = rgrid;
-    grid_gens->new_grid = rgrid;
-
-//    int tmp_print = -1;                      //zmienna potrzebna do wypisania generacji wprowadzanej
-//    AsciiArt_Print(tmp_print, flags, grid_gens);
+    grid_gens->new_grid = Grid_CopyGrid(grid_gens);
+    int index = 0;
+    int tmp_print = -1;                      //zmienna potrzebna do wypisania generacji wprowadzanej
+    AsciiArt_Print(tmp_print, flags, grid_gens);
 
     for (int i = 0; i < atoi(flags[0]); i++) {
+        printf("INDEX = %d \n" , index);
         Generator_CreateGen(grid_gens);
-//        AsciiArt_Print(i, flags, grid_gens);
+        AsciiArt_Print(i, flags, grid_gens);
         Grid_ChangeGrids(grid_gens);
+        index++;
     }
 
     Formatted_Print(flags, grid_gens);
 
     return 0;
+
 
 }
 

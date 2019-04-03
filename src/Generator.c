@@ -58,11 +58,9 @@ void Generator_CreateGen(struct grids *grid_gens) {
 //int main() {
 //    int mini_grid[9];
 //    grids *grid_gens = malloc(sizeof *grid_gens);
-//    int dim[] = {8, 5};
-//    int gridt[] = {1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0,
-//                   1, 1, 1, 1, 0, 0};
-//    int gridm[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//                   0, 0, 0, 0, 0, 0};
+//    int dim[] = {3, 3};
+//    int gridt[] = {0,1,0,0,1,0,0,1,0};
+//    int gridm[] = {0,0,0,0,0,0,0,0,0};
 //    grid_gens->grid = gridt;
 //    grid_gens->new_grid = gridm;
 //    grid_gens->dim = dim;
