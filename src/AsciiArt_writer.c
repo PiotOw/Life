@@ -6,23 +6,10 @@
 void AsciiArt_Print(int nfile, char **flags, struct grids *grid_gens) {
     FILE *out;
     char filename[] = "Generations/gen0000.txt\0";
-    if (nfile == -1) {
-        filename[18] = (nfile + 1) + '0';
-    } else if (nfile + 1 < 10) {
-        filename[18] = (nfile + 1) + '0';
-    } else if (nfile + 1 < 100) {
-        filename[17] = (nfile + 1) / 10 + '0';
-        filename[18] = (nfile + 1) % 10 + '0';
-    } else if (nfile + 1 < 1000) {
-        filename[16] = (nfile + 1) / 100 + '0';
-        filename[17] = ((nfile + 1) / 10) % 10 + '0';
-        filename[18] = (nfile + 1) % 10 + '0';
-    } else if (nfile + 1 == 1000) {
-        filename[15] = '1';
-        filename[16] = '0';
-        filename[17] = '0';
-        filename[18] = '0';
-    }
+    filename[15] = (nfile + 1) / 1000 + '0';
+    filename[16] = ((nfile + 1) / 100) % 10 + '0';
+    filename[17] = ((nfile + 1) / 10) % 10 + '0';
+    filename[18] = (nfile + 1) % 10 + '0';
 
 
     out = fopen(filename, "w");
