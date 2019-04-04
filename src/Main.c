@@ -8,7 +8,7 @@
 #include "Formatted_writer.h"
 #include "AsciiArt_writer.h"
 
-char** Flags_Interpreter(char **argv, int argc) {
+char **Flags_Interpreter(char **argv, int argc) {
     char **flags = malloc(6 * sizeof *flags);
     flags[0] = "5";             //gen
     flags[1] = "y";             //print
@@ -88,7 +88,7 @@ void Check_Flags(char **flags) {
 }
 
 int main(int argc, char **argv) {
-    char** flags = Flags_Interpreter(argv, argc);
+    char **flags = Flags_Interpreter(argv, argc);
     Check_Flags(flags);
     if (strcmp(flags[2], "stdin") == 0)
         Reader_MakeTempFile();
@@ -99,16 +99,26 @@ int main(int argc, char **argv) {
     grid_gens->dim = rdim;
     grid_gens->grid = rgrid;
     grid_gens->new_grid = Grid_CopyGrid(grid_gens);
-    int tmp_print = -1;                      //zmienna potrzebna do wypisania generacji wprowadzanej
-    AsciiArt_Print(tmp_print, flags, grid_gens);
+
+    if (strcmp(flags[1], "y") == 0) {
+        int tmp_print = -1;                      //zmienna potrzebna do wypisania wprowadzanej generacji
+        AsciiArt_Print(tmp_print, flags, grid_gens);
+    }
 
     for (int i = 0; i < atoi(flags[0]); i++) {
         Generator_CreateGen(grid_gens);
-        AsciiArt_Print(i, flags, grid_gens);
+        if (strcmp(flags[1], "y") == 0) AsciiArt_Print(i, flags, grid_gens);
         Grid_ChangeGrids(grid_gens);
     }
 
     Formatted_Print(flags, grid_gens);
+
+    free(grid_gens->dim);
+    free(grid_gens->grid);
+    free(grid_gens->new_grid);
+    for (int i = 0; i < 6; ++i) {
+        free(flags[i]);
+    }
 
     return 0;
 
