@@ -11,7 +11,5 @@ typedef struct grids {
 } grids;
 
 void Grid_ChangeGrids(struct grids *grid_gens);
-
-int *Grid_CopyGrid(struct grids *grid_gens);
-
+int* Grid_CopyGrid(struct grids *grid_gens);
 #endif //LIFE_GRID_H
