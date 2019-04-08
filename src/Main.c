@@ -79,7 +79,7 @@ void Check_Flags(char **flags) {
         }
     }
 
-    if (strcmp(flags[1], "y") != 0 && strcmp(flags[1], "n") != 0) {
+    if (strncmp(flags[1], "y", 2) != 0 && strcmp(flags[1], "n") != 0) {
         flags[1] = "y";
         fprintf(stderr, "Check_Flags: Nieprawidłowa wartość flagi \'--print\', domyślna wartość to y \n");
     }
@@ -98,7 +98,7 @@ int main(int argc, char **argv) {
     grids *grid_gens = malloc(sizeof *grid_gens);
     grid_gens->dim = rdim;
     grid_gens->grid = rgrid;
-    grid_gens->new_grid = Grid_CopyGrid(grid_gens);
+    grid_gens->new_grid = Grid_CopyGrid(grid_gens->grid, grid_gens->dim);
 
     if (strcmp(flags[1], "y") == 0) {
         int tmp_print = -1;                      //zmienna potrzebna do wypisania wprowadzanej generacji
@@ -119,6 +119,7 @@ int main(int argc, char **argv) {
     for (int i = 0; i < 6; ++i) {
         free(flags[i]);
     }
+    free(flags);
 
     return 0;
 

@@ -31,8 +31,8 @@ void Generator_MakeMiniGrid(int *mini_grid, struct grids *grid_gens, int cellInd
         mini_grid[8] = DEAD;
     }
     n = 0;
-    for (int y = -1; y < 2; y++) {
-        for (int x = -1; x < 2; x++) {
+    for (int y = -1; y <= +1; y++) {
+        for (int x = -1; x <= +1; x++) {
             if (mini_grid[n] == DEAD) {
                 n++;
             } else {
