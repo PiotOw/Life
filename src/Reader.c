@@ -17,12 +17,12 @@ void Reader_MakeTempFile() {
     fclose(from);
 }
 
-int *Reader_CheckSize(char **flags) {
+int *Reader_CheckSize(char *input) {
     FILE *in;
-    if (strcmp(flags[2], "stdin") == 0) {
+    if (strcmp(input, "stdin") == 0) {
         in = fopen("Reader_TmpFile.txt", "r");
     } else {
-        in = fopen(flags[2], "r");
+        in = fopen(input, "r");
     }
 
     if (in == NULL) {
@@ -67,12 +67,12 @@ int *Reader_CheckSize(char **flags) {
     return dim;
 }
 
-int *Reader_MakeGrid(char **flags, int *dim) {
+int *Reader_MakeGrid(char *input, int *dim) {
     FILE *in;
-    if (strcmp(flags[2], "stdin") == 0) {
+    if (strcmp(input, "stdin") == 0) {
         in = fopen("Reader_TmpFile.txt", "r");
     } else
-        in = fopen(flags[2], "r");
+        in = fopen(input, "r");
 
     int width = 0;
     int height = 1;
@@ -132,7 +132,7 @@ int *Reader_MakeGrid(char **flags, int *dim) {
     }
 
     fclose(in);
-    if (strcmp(flags[2], "stdin") == 0)
+    if (strcmp(input, "stdin") == 0)
         remove("Reader_TmpFile.txt");
 
     return grid;

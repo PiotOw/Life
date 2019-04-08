@@ -8,118 +8,120 @@
 #include "Formatted_writer.h"
 #include "AsciiArt_writer.h"
 
-char **Flags_Interpreter(char **argv, int argc) {
-    char **flags = malloc(6 * sizeof *flags);
-    flags[0] = "5";             //gen
-    flags[1] = "y";             //print
-    flags[2] = "stdin";         //input
-    flags[3] = "stdout";        //output
-    flags[4] = "0";             //dead
-    flags[5] = "1";             //alive
+typedef struct flags_t {
+    int gen;
+    char print;
+    char *input;
+    char *output;
+    char dead;
+    char alive;
+} flags_t;
+
+flags_t *Create_Flags() {
+    flags_t *flags = malloc(sizeof *flags);
+    flags->gen = 5;
+    flags->print = 'y';
+    flags->input = "stdin";
+    flags->output = "stdout";
+    flags->dead = '0';
+    flags->alive = '1';
+    return flags;
+}
+
+void Flags_Interpreter(char **argv, int argc, struct flags_t *flags) {
+    char *err;
+
     for (int i = 1; i < argc; i++) {
 
         if (strcmp(argv[i], "--gen") == 0) {
             if (i != argc - 1 && *argv[i + 1] != '-' && i < argc - 1) {
-                flags[0] = argv[++i];
+                flags->gen = strtol(argv[++i], &err, 10);
+                if (*err || flags->gen > 1000) {
+                    printf("Check_Flags: Nieprawidłowa wartość flagi \'--gen\', domyślna wartość to 5 \n");
+                    flags->gen = 5;
+                }
             } else {
                 fprintf(stderr,
                         "Flags_Interpreter: Flaga \'--gen\' została podana bez wartości, domyślna wartość to 5 \n");
             }
         } else if (strcmp(argv[i], "--print") == 0) {
             if (i != argc - 1 && *argv[i + 1] != '-') {
-                flags[1] = argv[++i];
+                if (strcmp(argv[i + 1], "y") == 0)
+                    flags->print = 'y';
+                else if (strcmp(argv[i + 1], "n") == 0)
+                    flags->print = 'n';
+                else
+                    fprintf(stderr,
+                            "Flags_Interpreter: Nieprawidłowa wartość flagi \'--print\', domyślna wartość to y \n");
             } else {
                 fprintf(stderr,
                         "Flags_Interpreter: Flaga \'--print\' została podana bez wartości, domyślna wartość to y \n");
             }
         } else if (strcmp(argv[i], "--input") == 0) {
             if (i != argc - 1 && *argv[i + 1] != '-') {
-                flags[2] = argv[++i];
+                flags->input = argv[++i];
             } else {
                 fprintf(stderr,
                         "Flags_Interpreter: Flaga \'--input\' została podana bez wartości, dane zostaną pobrane ze standardowego wejścia \n");
             }
         } else if (strcmp(argv[i], "--output") == 0) {
             if (i != argc - 1 && *argv[i + 1] != '-') {
-                flags[3] = argv[++i];
+                flags->output = argv[++i];
             } else {
                 fprintf(stderr,
                         "Flags_Interpreter: Flaga \'--output\' została podana bez wartości, wyniki zostaną wypisane na standardowe wyjście \n");
             }
         } else if (strcmp(argv[i], "--dead") == 0) {
             if (i != argc - 1 && *argv[i + 1] != '-') {
-                flags[4] = argv[++i];
+                flags->dead = *argv[++i];
             } else {
                 fprintf(stderr,
                         "Flags_Interpreter: Flaga \'--dead\' została podana bez wartości, domyślna wartość to \'0\' \n");
             }
         } else if (strcmp(argv[i], "--alive") == 0) {
             if (i != argc - 1 && *argv[i + 1] != '-') {
-                flags[5] = argv[++i];
+                flags->alive = *argv[++i];
             } else {
                 fprintf(stderr,
                         "Flags_Interpreter: Flaga \'--alive\' została podana bez wartości, wyniki zostaną pobrane ze standardowego wejścia \n");
             }
         }
     }
-    return flags;
 }
 
-void Check_Flags(char **flags) {
-    if (atoi(flags[0]) > 1000) {
-        printf("Check_Flags: Nieprawidłowa wartość flagi \'--gen\', domyślna wartość to 5 \n");
-        flags[0] = "5";
-    } else {
-        for (int i = 0; i < strlen(flags[0]); i++) {
-            if (isdigit(*(flags[0] + i)) == 0) {
-                printf("Check_Flags: Nieprawidłowa wartość flagi \'--gen\', domyślna wartość to 5 \n");
-                flags[0] = "5";
-                break;
-            }
-        }
-    }
-
-    if (strncmp(flags[1], "y", 2) != 0 && strcmp(flags[1], "n") != 0) {
-        flags[1] = "y";
-        fprintf(stderr, "Check_Flags: Nieprawidłowa wartość flagi \'--print\', domyślna wartość to y \n");
-    }
-
-
-}
-
-int main(int argc, char **argv) {
-    char **flags = Flags_Interpreter(argv, argc);
-    Check_Flags(flags);
-    if (strcmp(flags[2], "stdin") == 0)
-        Reader_MakeTempFile();
-    int *rdim = Reader_CheckSize(flags);
-    int *rgrid = Reader_MakeGrid(flags, rdim);
-
-    grids *grid_gens = malloc(sizeof *grid_gens);
-    grid_gens->dim = rdim;
-    grid_gens->grid = rgrid;
-    grid_gens->new_grid = Grid_CopyGrid(grid_gens->grid, grid_gens->dim);
-
-    if (strcmp(flags[1], "y") == 0) {
-        int tmp_print = -1;                      //zmienna potrzebna do wypisania wprowadzanej generacji
-        AsciiArt_Print(tmp_print, flags, grid_gens);
-    }
-
-    for (int i = 0; i < atoi(flags[0]); i++) {
-        Generator_CreateGen(grid_gens);
-        if (strcmp(flags[1], "y") == 0) AsciiArt_Print(i, flags, grid_gens);
-        Grid_ChangeGrids(grid_gens);
-    }
-
-    Formatted_Print(flags, grid_gens);
-
+void Memory_Free(struct grids *grid_gens, struct flags_t *flags) {
     free(grid_gens->dim);
     free(grid_gens->grid);
     free(grid_gens->new_grid);
-    for (int i = 0; i < 6; ++i) {
-        free(flags[i]);
-    }
+    free(grid_gens);
+
     free(flags);
+}
+
+
+int main(int argc, char **argv) {
+    flags_t *flags = Create_Flags();
+    Flags_Interpreter(argv, argc, flags);
+
+    if (strcmp(flags->input, "stdin") == 0)
+        Reader_MakeTempFile();
+
+    grids *grid_gens = Grid_CreateGridGens(flags->input);
+
+    if (flags->print == 'y') {
+        int tmp_print = -1;                      //zmienna potrzebna do wypisania wprowadzanej generacji
+        AsciiArt_Print(tmp_print, grid_gens, flags->dead, flags->alive);
+    }
+
+    for (int i = 0; i < flags->gen; i++) {
+        Generator_CreateGen(grid_gens);
+        if (flags->print == 'y') AsciiArt_Print(i, grid_gens, flags->dead, flags->alive);
+        Grid_ChangeGrids(grid_gens);
+    }
+
+    Formatted_Print(flags->output, grid_gens);
+
+    Memory_Free(grid_gens, flags);
 
     return 0;
 

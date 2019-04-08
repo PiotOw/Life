@@ -3,27 +3,26 @@
 #include "AsciiArt_writer.h"
 #include "Grid.h"
 
-void AsciiArt_Print(int nfile, char **flags, struct grids *grid_gens) {
+void AsciiArt_Print(int nfile, struct grids *grid_gens, char dead, char alive) {
     FILE *out;
-    char filename[] = "Generations/gen0000.txt\0";
-    filename[15] = (nfile + 1) / 1000 + '0';
-    filename[16] = ((nfile + 1) / 100) % 10 + '0';
-    filename[17] = ((nfile + 1) / 10) % 10 + '0';
-    filename[18] = (nfile + 1) % 10 + '0';
-
-
+    char filename[25];
+    sprintf(filename, "Generations/gen%04d.txt", nfile + 1);
     out = fopen(filename, "w");
-    for (int i = 0; i < grid_gens->dim[0] + 2; i++)
+
+    int w = grid_gens->dim[0];
+    int h = grid_gens->dim[1];
+
+    for (int i = 0; i < w + 2; i++)
         fprintf(out, "-");
     fprintf(out, "\n");
-    for (int height = 0; height < grid_gens->dim[1]; height++) {
+    for (int row = 0; row < h; row++) {
         fprintf(out, "|");
-        for (int width = 0; width < grid_gens->dim[0]; width++) {
-            fprintf(out, "%s", (grid_gens->new_grid[width + (grid_gens->dim[0] * height)] == 0 ? flags[4] : flags[5]));
+        for (int column = 0; column < w; column++) {
+            fprintf(out, "%c", (grid_gens->new_grid[column + (w * row)] == 0 ? dead : alive));
         }
         fprintf(out, "|\n");
     }
-    for (int i = 0; i < grid_gens->dim[0] + 2; i++)
+    for (int i = 0; i < w + 2; i++)
         fprintf(out, "-");
     fprintf(out, "\n");
 

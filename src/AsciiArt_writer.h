@@ -3,6 +3,6 @@
 
 #include "Grid.h"
 
-void AsciiArt_Print(int nfile, char **flags, struct grids *grid_gens);
+void AsciiArt_Print(int nfile, struct grids *grid_gens, char dead, char alive);
 
 #endif //LIFE_ASCIIART_WRITER_H

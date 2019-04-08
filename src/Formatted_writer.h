@@ -3,6 +3,6 @@
 
 #include "Grid.h"
 
-void Formatted_Print(char **flags, struct grids *grid_gens);
+void Formatted_Print(char *output, struct grids *grid_gens);
 
 #endif //LIFE_FORMATTED_WRITER_H

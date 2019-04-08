@@ -3,12 +3,12 @@
 #include "Formatted_writer.h"
 #include "Grid.h"
 
-void Formatted_Print(char **flags, struct grids *grid_gens) {
+void Formatted_Print(char *output, struct grids *grid_gens) {
     FILE *out;
-    if (strcmp(flags[3], "stdout") == 0)
+    if (strcmp(output, "stdout") == 0)
         out = stdout;
     else
-        out = fopen(flags[3], "w");
+        out = fopen(output, "w");
     fprintf(out, "(%d , %d)\n", grid_gens->dim[0], grid_gens->dim[1]);
     for (int i = 0; i < grid_gens->dim[0] * grid_gens->dim[1]; i++) {
         fprintf(out, "%d", grid_gens->grid[i]);
