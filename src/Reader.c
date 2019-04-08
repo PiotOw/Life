@@ -33,7 +33,7 @@ int *Reader_CheckSize(char *input) {
 
     char file_char;                                         //zmienna pomocnicza - poruszanie sie po znakach
     int *dim = malloc(2 * sizeof(int));
-    dim[0] = 0;
+    dim[0] = 1;
     dim[1] = 1;
     int maxwidth = 1;
 
@@ -47,7 +47,9 @@ int *Reader_CheckSize(char *input) {
         if (file_char == ',')
             fscanf(in, "%d", &dim[1]);
         while (isspace(file_char = fgetc(in)));
-        if (file_char == ')');                                                   //kontrola bledow (w przyszlosci)
+        if (file_char != ')')
+            fprintf(stderr,
+                    "Ale wtopa, podane wymiary nie maja \')\'\n");                                                   //kontrola bledow (w przyszlosci)
     } else if (isalnum(file_char)) {                        //wyliczanie na podstawie podanej siatki
         while ((file_char = fgetc(in)) != EOF) {
             if (isalnum(file_char))
@@ -75,7 +77,7 @@ int *Reader_MakeGrid(char *input, int *dim) {
         in = fopen(input, "r");
 
     int width = 0;
-    int height = 1;
+    int height = 0;
     int *grid = malloc(dim[0] * dim[1] * sizeof(int));
 
     int file_char;
@@ -85,48 +87,53 @@ int *Reader_MakeGrid(char *input, int *dim) {
         file_char = fgetc(in);
     }
     while (file_char != EOF) {
+        printf("%c", file_char);
         if (file_char == '0') {
-            grid[width + dim[0] * (height - 1)] = DEAD;
+            grid[width + dim[0] * height] = DEAD;
             width++;
         } else if (file_char == '1') {
-            grid[width + dim[0] * (height - 1)] = ALIVE;
+            grid[width + dim[0] * height] = ALIVE;
             width++;
         } else if (isalnum((file_char))) {
             fprintf(stderr,
                     "Reader_MakeGrid: Linia %d znak %d wczytano: \"%c\". Stan automatycznie zmieniony na \"1\" \n",
-                    height, width, file_char);
-            grid[width + dim[0] * (height - 1)] = ALIVE;
+                    height + 1, width, file_char);
+            grid[width + dim[0] * height] = ALIVE;
             width++;
         } else if (file_char == '\n') {
             if (width < dim[0]) {
                 fprintf(stderr, "Reader_MakeGrid: Linia %d ma nieprawidłową długość. Powinna mieć %d, "
                                 "a ma %d. Wiersz został dopełniony martwymi komórkami.\n",
-                        height, dim[0], width);
+                        height + 1, dim[0], width);
                 while (width < dim[0]) {
-                    grid[width + dim[0] * (height - 1)] = DEAD;
+                    grid[width + dim[0] * height] = DEAD;
                     width++;
                 }
             }
             width = 0;
-            height++;
+            if (height + 1 < dim[1])
+                height++;
+            else
+                break;
         }
         if (width > dim[0]) {
             fprintf(stderr, "Reader_MakeGrid: Linia %d ma nieprawidłową długość. Wiersz został skrócony do %d \n",
-                    height, dim[0]);
-            if (height == dim[1])
-                return grid;
-            width = 0;
-            height++;
+                    height + 1, dim[0]);
             while ((file_char = fgetc(in)) != '\n');
+            width = 0;
+            if (height + 1 < dim[1])
+                height++;
+            else
+                break;
         }
         file_char = fgetc(in);
     }
-    if (width < dim[0]) {
+    if (width < dim[0] && height + 1 < dim[1]) {
         fprintf(stderr, "Reader_MakeGrid: Linia %d ma nieprawidłową długość. Powinna mieć %d, "
                         "a ma %d. Wiersz został dopełniony martwymi komórkami.\n",
-                height, dim[0], width);
+                height + 1, dim[0], width);
         while (width < dim[0]) {
-            grid[width + dim[0] * (height - 1)] = 0;
+            grid[width + dim[0] * height] = 0;
             width++;
         }
     }
