@@ -12,7 +12,6 @@ add_executable(Life
         src/Reader.c
         src/Reader.h
         src/Rules.c
-        test/ReaderTest.c
         src/Formatted_writer.c
         src/Formatted_writer.h
         src/AsciiArt_writer.c
