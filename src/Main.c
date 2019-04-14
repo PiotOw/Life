@@ -37,7 +37,7 @@ void FlagsInterpreter(char **argv, int argc, struct flags_t *flags) {
             if (i != argc - 1 && *argv[i + 1] != '-' && i < argc - 1) {
                 flags->gen = strtol(argv[++i], &err, 10);
                 if (*err || flags->gen > 1000) {
-                    printf("Check_Flags: Nieprawidłowa wartość flagi \'--gen\', domyślna wartość to 5 \n");
+                    printf("FlagsInterpreter: Nieprawidłowa wartość flagi \'--gen\', domyślna wartość to 5 \n");
                     flags->gen = 5;
                 }
             } else {
