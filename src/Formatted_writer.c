@@ -15,6 +15,5 @@ void Formatted_Print(char *output, struct grids *grid_gens) {
         if ((i + 1) % grid_gens->dim[0] == 0 && (i + 1) != grid_gens->dim[0] * grid_gens->dim[1])
             fprintf(out, "\n");
     }
-
     fclose(out);
 }
