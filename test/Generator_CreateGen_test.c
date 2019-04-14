@@ -51,3 +51,20 @@ int Generator_CreateGen_test2() {
         return 1;
     }
 }
+
+int main(){
+    int successful = 0;
+    if(Generator_CreateGen_test1()){
+        printf("Test nr 1 funkcji Generator_CreateGen() nie powiódł się\n");
+    }
+    else{
+        successful++;
+    }
+    if(Generator_CreateGen_test1()){
+        printf("Test nr 2 funkcji Generator_CreateGen() nie powiódł się\n");
+    }
+    else{
+        successful++;
+    }
+    printf("%d / 2 testy funkcji Generator_CreateGen() zakończyły się powodzeniem\n", successful);
+}
