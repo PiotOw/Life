@@ -87,7 +87,6 @@ int *Reader_MakeGrid(char *input, int *dim) {
         file_char = fgetc(in);
     }
     while (file_char != EOF) {
-        printf("%c", file_char);
         if (file_char == '0') {
             grid[width + dim[0] * height] = DEAD;
             width++;
