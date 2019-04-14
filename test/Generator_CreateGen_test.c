@@ -21,6 +21,10 @@ int Generator_CreateGen_test1() {
             success = 0;
         }
     }
+    free(grid_gens->dim);
+    free(grid_gens->grid);
+    free(grid_gens->new_grid);
+    free(grid_gens);
     if (success) {
         return 0;
     } else {
@@ -50,4 +54,21 @@ int Generator_CreateGen_test2() {
     } else {
         return 1;
     }
+}
+
+int main(){
+    int successful = 0;
+    if(Generator_CreateGen_test1()){
+        printf("Test nr 1 funkcji Generator_CreateGen() nie powiódł się\n");
+    }
+    else{
+        successful++;
+    }
+    if(Generator_CreateGen_test1()){
+        printf("Test nr 2 funkcji Generator_CreateGen() nie powiódł się\n");
+    }
+    else{
+        successful++;
+    }
+    printf("%d / 2 testy funkcji Generator_CreateGen() zakończyły się powodzeniem\n", successful);
 }

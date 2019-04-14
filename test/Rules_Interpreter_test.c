@@ -17,3 +17,21 @@ int Rules_Interpreter_Test2() {
         return 0;
     } else return 1;
 }
+
+int main(){
+    int successful = 0;
+    if(Rules_Interpreter_Test1()){
+        printf("Test nr 1 funkcji Rules_Interpreter() nie powiódł się\n");
+    }
+    else{
+        successful++;
+    }
+    if(Rules_Interpreter_Test2()){
+        printf("Test nr 2 funkcji Rules_Interpreter() nie powiódł się\n");
+    }
+    else{
+        successful++;
+    }
+    printf("%d / 2 testy funkcji Rules_Interpreter() zakończyły się powodzeniem\n", successful);
+
+}
