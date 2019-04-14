@@ -49,7 +49,7 @@ int *Reader_CheckSize(char *input) {
         while (isspace(file_char = fgetc(in)));
         if (file_char != ')')
             fprintf(stderr,
-                    "Ale wtopa, podane wymiary nie maja \')\'\n");                                                   //kontrola bledow (w przyszlosci)
+                    "Ale wtopa, podane wymiary nie mają \')\'\n");                                                   //kontrola bledow (w przyszlosci)
     } else if (isalnum(file_char)) {                        //wyliczanie na podstawie podanej siatki
         while ((file_char = fgetc(in)) != EOF) {
             if (isalnum(file_char))
@@ -88,53 +88,74 @@ int *Reader_MakeGrid(char *input, int *dim) {
     }
     while (file_char != EOF) {
         if (file_char == '0') {
-            grid[width + dim[0] * height] = DEAD;
+            grid[getCellIndex(width, height, dim[0])] = DEAD;
             width++;
         } else if (file_char == '1') {
-            grid[width + dim[0] * height] = ALIVE;
+            grid[getCellIndex(width, height, dim[0])] = ALIVE;
             width++;
         } else if (isalnum((file_char))) {
             fprintf(stderr,
                     "Reader_MakeGrid: Linia %d znak %d wczytano: \"%c\". Stan automatycznie zmieniony na \"1\" \n",
                     height + 1, width, file_char);
-            grid[width + dim[0] * height] = ALIVE;
+            grid[getCellIndex(width, height, dim[0])] = ALIVE;
             width++;
+
+
         } else if (file_char == '\n') {
             if (width < dim[0]) {
                 fprintf(stderr, "Reader_MakeGrid: Linia %d ma nieprawidłową długość. Powinna mieć %d, "
                                 "a ma %d. Wiersz został dopełniony martwymi komórkami.\n",
                         height + 1, dim[0], width);
                 while (width < dim[0]) {
-                    grid[width + dim[0] * height] = DEAD;
+                    grid[getCellIndex(width, height, dim[0])] = DEAD;
                     width++;
                 }
             }
             width = 0;
             if (height + 1 < dim[1])
                 height++;
-            else
-                break;
+            else {
+                fprintf(stderr, "Reader_MakeGrid: Wprowadzono zbyt wiele Linii. Przeczytano do linii %d \n",
+                        height + 1);
+                return grid;
+            }
         }
         if (width > dim[0]) {
             fprintf(stderr, "Reader_MakeGrid: Linia %d ma nieprawidłową długość. Wiersz został skrócony do %d \n",
                     height + 1, dim[0]);
-            while ((file_char = fgetc(in)) != '\n');
+            while ((file_char = fgetc(in)) != '\n' && file_char != EOF);
             width = 0;
             if (height + 1 < dim[1])
                 height++;
-            else
-                break;
+            else {
+                fprintf(stderr, "Reader_MakeGrid: Wprowadzono zbyt wiele Linii. Przeczytano do linii nr %d \n",
+                        height + 1);
+                return grid;
+            }
         }
         file_char = fgetc(in);
     }
-    if (width < dim[0] && height + 1 < dim[1]) {
+    if (width < dim[0] && height < dim[1]) {
         fprintf(stderr, "Reader_MakeGrid: Linia %d ma nieprawidłową długość. Powinna mieć %d, "
                         "a ma %d. Wiersz został dopełniony martwymi komórkami.\n",
                 height + 1, dim[0], width);
         while (width < dim[0]) {
-            grid[width + dim[0] * height] = 0;
+            grid[getCellIndex(width, height, dim[0])] = DEAD;
             width++;
         }
+        height++;
+        width = 0;
+    }
+    if (height != dim[1]) {
+        fprintf(stderr, "Reader_MakeGrid: Wprowadzono za mało linii. Pozostałe linie uzupełniono zerami\n");
+        for (; height < dim[1]; height++) {
+            while (width < dim[0]) {
+                grid[getCellIndex(width, height, dim[0])] = DEAD;
+                width++;
+            }
+            width = 0;
+        }
+
     }
 
     fclose(in);

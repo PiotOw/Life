@@ -2,30 +2,50 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-#include "..\src\Reader.h"
+#include "../src/Reader.h"
+#include "../src/Grid.h"
+
+
+int ReaderTest1() {
+    char *input = "Reader_test1.txt";
+    int *dim = Reader_CheckSize(input);
+    int *grid = Reader_MakeGrid(input, dim);
+    int g_test[] = {1, 0, 1, 0, 0,
+                    1, 1, 1, 1, 1,
+                    1, 1, 1, 0, 0,
+                    0, 0, 0, 0, 0};
+
+    for (int i = 0; i < dim[0] * dim[1]; i++) {
+        if (grid[i] != g_test[i])
+            return 1;
+    }
+    return 0;
+}
+
+int ReaderTest2() {
+    char *input = "Reader_test2.txt";
+    int *dim = Reader_CheckSize(input);
+    int *grid = Reader_MakeGrid(input, dim);
+    int g_test[] = {1, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+                    1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+                    1, 1, 1, 0, 0, 1, 1, 0, 0, 0,
+                    0, 0, 0, 1, 1, 1, 0, 1, 0, 1,
+                    0, 0, 0, 1, 0, 0, 0, 0, 0, 0};
+
+    for (int i = 0; i < dim[0] * dim[1]; i++) {
+        if (grid[i] != g_test[i])
+            return 1;
+    }
+    return 0;
+}
 
 int main() {
-    printf("****TEST 1****\n");
-    char **flags = malloc(6 * sizeof *flags);
-    flags[2] = "Reader_test1.txt";
-    int *dim1 = Reader_CheckSize(flags);
-    int *grid1 = Reader_MakeGrid(flags, dim1);
+    int i;
+    if (ReaderTest1() == 0)
+        i++;
+    if (ReaderTest2() == 0)
+        i++;
 
-    for (int i = 0; i < dim1[0] * dim1[1]; i++) {
-        printf("%d", grid1[i]);
-        if ((i + 1) % dim1[0] == 0)
-            printf("\n");
-    }
-
-
-    printf("\n\n****TEST 2****\n");
-    flags[2] = "Reader_test2.txt";
-    int *dim2 = Reader_CheckSize(flags);
-    int *grid2 = Reader_MakeGrid(flags, dim2);
-
-    for (int i = 0; i < dim2[0] * dim2[1]; i++) {
-        printf("%d", grid2[i]);
-        if ((i + 1) % dim2[0] == 0)
-            printf("\n");
-    }
+    printf("****Powiodło się %d/2****\n ", i);
+    return 0;
 }
