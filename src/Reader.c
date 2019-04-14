@@ -144,8 +144,9 @@ cell_state_t *Reader_MakeGrid(char *input, int *dim) {
             width++;
         }
         width = 0;
+        height++;
     }
-    if (height + 1 != dim[1]) {
+    if (height < dim[1]) {
         fprintf(stderr, "Reader_MakeGrid: Wprowadzono za mało linii. Pozostałe linie uzupełniono zerami\n");
         for (; height < dim[1]; height++) {
             while (width < dim[0]) {
