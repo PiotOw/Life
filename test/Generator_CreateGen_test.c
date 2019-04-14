@@ -21,10 +21,6 @@ int Generator_CreateGen_test1() {
             success = 0;
         }
     }
-    free(grid_gens->dim);
-    free(grid_gens->grid);
-    free(grid_gens->new_grid);
-    free(grid_gens);
     if (success) {
         return 0;
     } else {
