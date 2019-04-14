@@ -128,7 +128,7 @@ cell_state_t *Reader_MakeGrid(char *input, int *dim) {
             if (height + 1 < dim[1])
                 height++;
             else {
-                fprintf(stderr, "Reader_MakeGrid: Wprowadzono zbyt wiele Linii. Przeczytano do linii nr %d \n",
+                fprintf(stderr, "Reader_MakeGrid: Wprowadzono zbyt wiele znaków. Przeczytano do linii nr %d \n",
                         height + 1);
                 return grid;
             }
@@ -143,10 +143,9 @@ cell_state_t *Reader_MakeGrid(char *input, int *dim) {
             grid[Grid_GetCellIndex(width, height, dim[0])] = DEAD;
             width++;
         }
-        height++;
         width = 0;
     }
-    if (height != dim[1]) {
+    if (height + 1 != dim[1]) {
         fprintf(stderr, "Reader_MakeGrid: Wprowadzono za mało linii. Pozostałe linie uzupełniono zerami\n");
         for (; height < dim[1]; height++) {
             while (width < dim[0]) {
