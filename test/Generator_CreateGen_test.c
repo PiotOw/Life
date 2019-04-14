@@ -21,6 +21,7 @@ int Generator_CreateGen_test1() {
             success = 0;
         }
     }
+    free(grid_gens);
     if (success) {
         return 0;
     } else {
@@ -45,6 +46,7 @@ int Generator_CreateGen_test2() {
             success = 0;
         }
     }
+    free(grid_gens);
     if (success) {
         return 0;
     } else {
