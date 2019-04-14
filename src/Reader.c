@@ -46,6 +46,8 @@ int *Reader_CheckSize(char *input) {
         while (isspace(file_char = fgetc(in)));
         if (file_char == ',')
             fscanf(in, "%d", &dim[1]);
+        else
+            fprintf(stderr, "Ale wtopa, wymiary nie mają \',\' - wysokość ustawiona na 1.\n");
         while (isspace(file_char = fgetc(in)));
         if (file_char != ')')
             fprintf(stderr,
