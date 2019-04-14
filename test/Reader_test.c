@@ -48,17 +48,17 @@ int ReaderTest2() {
 }
 
 int main() {
-    int i = 0;
-    if (ReaderTest1() == 0)
-        i++;
-    else
-        printf("Test nr 1 nie powiódł się\n");
+    int successful = 0;
+    if (ReaderTest1()) {
+        printf("Test nr 1 funkcji ReaderTest() nie powiódł się\n");
+    } else {
+        successful++;
+    }
+    if (ReaderTest1()) {
+        printf("Test nr 2 funkcji ReaderTest() nie powiódł się\n");
+    } else {
+        successful++;
+    }
+    printf("%d / 2 testy funkcji ReaderTest() zakończyły się powodzeniem\n", successful);
 
-    if (ReaderTest2() == 0)
-        i++;
-    else
-        printf("Test nr 2 nie powiódł się\n");
-
-    printf("****Powiodło się %d/2****\n", i);
-    return 0;
 }
