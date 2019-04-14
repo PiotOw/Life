@@ -9,10 +9,14 @@ void Formatted_Print(char *output, struct grids *grid_gens) {
         out = stdout;
     else
         out = fopen(output, "w");
-    fprintf(out, "(%d , %d)\n", grid_gens->dim[0], grid_gens->dim[1]);
-    for (int i = 0; i < grid_gens->dim[0] * grid_gens->dim[1]; i++) {
+
+    int w = grid_gens->dim[0];
+    int h = grid_gens->dim[1];
+
+    fprintf(out, "(%d , %d)\n", w, h);
+    for (int i = 0; i < w * h; i++) {
         fprintf(out, "%d", grid_gens->grid[i]);
-        if ((i + 1) % grid_gens->dim[0] == 0 && (i + 1) != grid_gens->dim[0] * grid_gens->dim[1])
+        if ((i + 1) % w == 0 && (i + 1) != w * h)
             fprintf(out, "\n");
     }
     fclose(out);
