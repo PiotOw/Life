@@ -18,7 +18,7 @@ void AsciiArt_Print(int nfile, struct grids *grid_gens, char dead, char alive) {
     for (int row = 0; row < h; row++) {
         fprintf(out, "|");
         for (int column = 0; column < w; column++) {
-            fprintf(out, "%c", (grid_gens->new_grid[column + (w * row)] == 0 ? dead : alive));
+            fprintf(out, "%c", (grid_gens->new_grid[getCellIndex(column, row, w)] == 0 ? dead : alive));
         }
         fprintf(out, "|\n");
     }

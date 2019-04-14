@@ -5,7 +5,7 @@
 #include "Grid.h"
 #include "Rules.h"
 
-void Generator_MakeMiniGrid(int *mini_grid, struct grids *grid_gens, int cellIndex) {
+void Generator_MakeMiniGrid(int *mini_grid, struct grids *grid_gens, int xIndex, int yIndex) {
     for (int i = 0; i < 9; i++) {
         mini_grid[i] = ALIVE;
     }
@@ -36,7 +36,7 @@ void Generator_MakeMiniGrid(int *mini_grid, struct grids *grid_gens, int cellInd
             if (mini_grid[n] == DEAD) {
                 n++;
             } else {
-                mini_grid[n] = grid_gens->grid[cellIndex + x + (y * grid_gens->dim[0])];
+                mini_grid[n] = grid_gens->grid[getCellIndex(xIndex + x, yIndex + y, grid_gens->dim[0])];
                 n++;
             }
         }
@@ -45,12 +45,10 @@ void Generator_MakeMiniGrid(int *mini_grid, struct grids *grid_gens, int cellInd
 
 void Generator_CreateGen(struct grids *grid_gens) {
     int mini_grid[9];
-    int index;
     for (int y = 0; y < grid_gens->dim[1]; y++) {
         for (int x = 0; x < grid_gens->dim[0]; x++) {
-            index = x + (y * grid_gens->dim[0]);
-            Generator_MakeMiniGrid(mini_grid, grid_gens, index);
-            grid_gens->new_grid[index] = Rules_Interpreter(mini_grid);
+            Generator_MakeMiniGrid(mini_grid, grid_gens, x, y);
+            grid_gens->new_grid[getCellIndex(x, y, grid_gens->dim[0])] = Rules_Interpreter(mini_grid);
         }
     }
 }
