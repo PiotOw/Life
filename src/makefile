@@ -2,7 +2,7 @@
 
 CC = gcc
 
-FLAG = -WALL
+FLAG = -Wall
 OBJECTS := $(patsubst %.c,%.o,$(wildcard *.c))
 
 %.o: %.c %.h
