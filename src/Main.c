@@ -17,7 +17,7 @@ typedef struct flags_t {
     char alive;
 } flags_t;
 
-flags_t *Create_Flags() {
+flags_t *CreateFlags() {
     flags_t *flags = malloc(sizeof *flags);
     flags->gen = 5;
     flags->print = 'y';
@@ -28,7 +28,7 @@ flags_t *Create_Flags() {
     return flags;
 }
 
-void Flags_Interpreter(char **argv, int argc, struct flags_t *flags) {
+void FlagsInterpreter(char **argv, int argc, struct flags_t *flags) {
     char *err;
 
     for (int i = 1; i < argc; i++) {
@@ -42,7 +42,7 @@ void Flags_Interpreter(char **argv, int argc, struct flags_t *flags) {
                 }
             } else {
                 fprintf(stderr,
-                        "Flags_Interpreter: Flaga \'--gen\' została podana bez wartości, domyślna wartość to 5 \n");
+                        "FlagsInterpreter: Flaga \'--gen\' została podana bez wartości, domyślna wartość to 5 \n");
             }
         } else if (strcmp(argv[i], "--print") == 0) {
             if (i != argc - 1 && *argv[i + 1] != '-') {
@@ -52,44 +52,44 @@ void Flags_Interpreter(char **argv, int argc, struct flags_t *flags) {
                     flags->print = 'n';
                 else
                     fprintf(stderr,
-                            "Flags_Interpreter: Nieprawidłowa wartość flagi \'--print\', domyślna wartość to y \n");
+                            "FlagsInterpreter: Nieprawidłowa wartość flagi \'--print\', domyślna wartość to y \n");
             } else {
                 fprintf(stderr,
-                        "Flags_Interpreter: Flaga \'--print\' została podana bez wartości, domyślna wartość to y \n");
+                        "FlagsInterpreter: Flaga \'--print\' została podana bez wartości, domyślna wartość to y \n");
             }
         } else if (strcmp(argv[i], "--input") == 0) {
             if (i != argc - 1 && *argv[i + 1] != '-') {
                 flags->input = argv[++i];
             } else {
                 fprintf(stderr,
-                        "Flags_Interpreter: Flaga \'--input\' została podana bez wartości, dane zostaną pobrane ze standardowego wejścia \n");
+                        "FlagsInterpreter: Flaga \'--input\' została podana bez wartości, dane zostaną pobrane ze standardowego wejścia \n");
             }
         } else if (strcmp(argv[i], "--output") == 0) {
             if (i != argc - 1 && *argv[i + 1] != '-') {
                 flags->output = argv[++i];
             } else {
                 fprintf(stderr,
-                        "Flags_Interpreter: Flaga \'--output\' została podana bez wartości, wyniki zostaną wypisane na standardowe wyjście \n");
+                        "FlagsInterpreter: Flaga \'--output\' została podana bez wartości, wyniki zostaną wypisane na standardowe wyjście \n");
             }
         } else if (strcmp(argv[i], "--dead") == 0) {
             if (i != argc - 1 && *argv[i + 1] != '-') {
                 flags->dead = *argv[++i];
             } else {
                 fprintf(stderr,
-                        "Flags_Interpreter: Flaga \'--dead\' została podana bez wartości, domyślna wartość to \'0\' \n");
+                        "FlagsInterpreter: Flaga \'--dead\' została podana bez wartości, domyślna wartość to \'0\' \n");
             }
         } else if (strcmp(argv[i], "--alive") == 0) {
             if (i != argc - 1 && *argv[i + 1] != '-') {
                 flags->alive = *argv[++i];
             } else {
                 fprintf(stderr,
-                        "Flags_Interpreter: Flaga \'--alive\' została podana bez wartości, wyniki zostaną pobrane ze standardowego wejścia \n");
+                        "FlagsInterpreter: Flaga \'--alive\' została podana bez wartości, wyniki zostaną pobrane ze standardowego wejścia \n");
             }
         }
     }
 }
 
-void Memory_Free(struct grids *grid_gens, struct flags_t *flags) {
+void MemoryFree(struct grids *grid_gens, struct flags_t *flags) {
     free(grid_gens->dim);
     free(grid_gens->grid);
     free(grid_gens->new_grid);
@@ -100,8 +100,8 @@ void Memory_Free(struct grids *grid_gens, struct flags_t *flags) {
 
 
 int main(int argc, char **argv) {
-    flags_t *flags = Create_Flags();
-    Flags_Interpreter(argv, argc, flags);
+    flags_t *flags = CreateFlags();
+    FlagsInterpreter(argv, argc, flags);
 
     if (strcmp(flags->input, "stdin") == 0)
         Reader_MakeTempFile();
@@ -121,7 +121,7 @@ int main(int argc, char **argv) {
 
     Formatted_Print(flags->output, grid_gens);
 
-    Memory_Free(grid_gens, flags);
+    MemoryFree(grid_gens, flags);
 
     return 0;
 
