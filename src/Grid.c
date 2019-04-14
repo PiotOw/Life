@@ -8,6 +8,11 @@ void Grid_ChangeGrids(struct grids *grid_gens) {
         grid_gens->grid[i] = grid_gens->new_grid[i];
 }
 
+int getCellIndex(int x, int y, int width){
+    int index = x + width * y;
+    return index;
+}
+
 int *Grid_CopyGrid(int *grid, int *dim) {
     int *rgrid = malloc(dim[0] * dim[1] * sizeof(int));
     for (int i = 0; i < dim[0] * dim[1]; i++)
