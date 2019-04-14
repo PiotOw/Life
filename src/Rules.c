@@ -1,32 +1,25 @@
 #include <stdio.h>
 #include "Grid.h"
+#include "Rules.h"
 
-int Rules_Interpreter(int *mini_grid) {
-    int aliveCaunt = 0;
+cell_state_t Rules_Interpreter(cell_state_t *mini_grid) {
+    int aliveCount = 0;
     int cellState = mini_grid[4];
     for (int i = 0; i < 9; i++) {
-        aliveCaunt += mini_grid[i];
+        aliveCount += mini_grid[i];
     }
     if (cellState) {
-        if (aliveCaunt == 3 || aliveCaunt == 4) {
+        if (aliveCount == 3 || aliveCount == 4) {
             return ALIVE;
         } else {
             return DEAD;
         }
 
     } else {
-        if (aliveCaunt == 3) {
+        if (aliveCount == 3) {
             return ALIVE;
         } else {
             return DEAD;
         }
     }
 }
-/*
-
-int main() {
-    int grid[9] = {0 ,0 ,0 ,0 ,1 ,0 ,0 ,1 ,0};
-    int x = Rules_Interpreter(grid);
-    printf("%d \n", x);
-}
-*/

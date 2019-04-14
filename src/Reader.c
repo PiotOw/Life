@@ -69,7 +69,7 @@ int *Reader_CheckSize(char *input) {
     return dim;
 }
 
-int *Reader_MakeGrid(char *input, int *dim) {
+cell_state_t *Reader_MakeGrid(char *input, int *dim) {
     FILE *in;
     if (strcmp(input, "stdin") == 0) {
         in = fopen("Reader_TmpFile.txt", "r");
@@ -78,7 +78,7 @@ int *Reader_MakeGrid(char *input, int *dim) {
 
     int width = 0;
     int height = 0;
-    int *grid = malloc(dim[0] * dim[1] * sizeof(int));
+    cell_state_t *grid = malloc(dim[0] * dim[1] * sizeof(int));
 
     int file_char;
     file_char = fgetc(in);
@@ -88,16 +88,16 @@ int *Reader_MakeGrid(char *input, int *dim) {
     }
     while (file_char != EOF) {
         if (file_char == '0') {
-            grid[getCellIndex(width, height, dim[0])] = DEAD;
+            grid[Grid_GetCellIndex(width, height, dim[0])] = DEAD;
             width++;
         } else if (file_char == '1') {
-            grid[getCellIndex(width, height, dim[0])] = ALIVE;
+            grid[Grid_GetCellIndex(width, height, dim[0])] = ALIVE;
             width++;
         } else if (isalnum((file_char))) {
             fprintf(stderr,
                     "Reader_MakeGrid: Linia %d znak %d wczytano: \"%c\". Stan automatycznie zmieniony na \"1\" \n",
                     height + 1, width, file_char);
-            grid[getCellIndex(width, height, dim[0])] = ALIVE;
+            grid[Grid_GetCellIndex(width, height, dim[0])] = ALIVE;
             width++;
 
 
@@ -107,7 +107,7 @@ int *Reader_MakeGrid(char *input, int *dim) {
                                 "a ma %d. Wiersz został dopełniony martwymi komórkami.\n",
                         height + 1, dim[0], width);
                 while (width < dim[0]) {
-                    grid[getCellIndex(width, height, dim[0])] = DEAD;
+                    grid[Grid_GetCellIndex(width, height, dim[0])] = DEAD;
                     width++;
                 }
             }
@@ -140,7 +140,7 @@ int *Reader_MakeGrid(char *input, int *dim) {
                         "a ma %d. Wiersz został dopełniony martwymi komórkami.\n",
                 height + 1, dim[0], width);
         while (width < dim[0]) {
-            grid[getCellIndex(width, height, dim[0])] = DEAD;
+            grid[Grid_GetCellIndex(width, height, dim[0])] = DEAD;
             width++;
         }
         height++;
@@ -150,7 +150,7 @@ int *Reader_MakeGrid(char *input, int *dim) {
         fprintf(stderr, "Reader_MakeGrid: Wprowadzono za mało linii. Pozostałe linie uzupełniono zerami\n");
         for (; height < dim[1]; height++) {
             while (width < dim[0]) {
-                grid[getCellIndex(width, height, dim[0])] = DEAD;
+                grid[Grid_GetCellIndex(width, height, dim[0])] = DEAD;
                 width++;
             }
             width = 0;

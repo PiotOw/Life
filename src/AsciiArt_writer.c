@@ -18,7 +18,7 @@ void AsciiArt_Print(int nfile, struct grids *grid_gens, char dead, char alive) {
     for (int row = 0; row < h; row++) {
         fprintf(out, "|");
         for (int column = 0; column < w; column++) {
-            fprintf(out, "%c", (grid_gens->new_grid[getCellIndex(column, row, w)] == 0 ? DEAD : ALIVE));
+            fprintf(out, "%c", (grid_gens->new_grid[Grid_GetCellIndex(column, row, w)] == 0 ? dead : alive));
         }
         fprintf(out, "|\n");
     }
@@ -28,29 +28,3 @@ void AsciiArt_Print(int nfile, struct grids *grid_gens, char dead, char alive) {
 
     fclose(out);
 }
-/*
-int main() {
-    grids *grid_gens = malloc(sizeof *grid_gens);
-    char **flags = malloc(6 * sizeof *flags);
-    flags[0] = "5";             //gen
-    flags[1] = "y";             //print
-    flags[2] = "stdin";         //input
-    flags[3] = "stdout";        //output
-    flags[4] = "0";             //dead
-    flags[5] = "1";             //alive
-
-    int ndim[] = {9, 5};
-    grid_gens->dim = ndim;
-    int grid[] = {0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1,
-                  0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0};
-    int grid2[] = {1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1,
-                   0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0};
-    grid_gens->new_grid = grid;
-    grid_gens->grid = grid2;
-    for(int i = 0 ; i < 1000 ; i++)
-    AsciiArt_Print(i, flags, grid_gens);
-
-
-    return 0;
-}
-*/
